@@ -47,6 +47,13 @@ async function gh(path, { method = 'GET', body, raw = false } = {}) {
     cache: 'no-store',
   });
   if (res.status === 401) { logout('Anahtar geçersiz ya da süresi dolmuş. Yeni bir anahtarla giriş yap.'); throw new Error('unauthorized'); }
+  if (res.status === 403) {
+    // GitHub does not expose the missing-permission header to browsers, so name it from the request.
+    const write = method !== 'GET';
+    const area = /\/actions\//.test(path) ? 'Actions' : 'Contents';
+    const missing = `${area} "${write ? 'Read and write' : 'Read-only'}"`;
+    throw new Error(`Anahtarının bu işlem için izni yok: ${missing} gerekiyor. GitHub'da Settings, Developer settings, Fine-grained tokens sayfasında anahtarı açıp Permissions bölümünden Contents ve Actions için "Read and write" seç ve Update'e bas; panelde yeniden giriş yapman gerekmez.`);
+  }
   if (!res.ok) {
     let msg = `${res.status}`;
     try { msg += `: ${(await res.json()).message}`; } catch { /* no body */ }
