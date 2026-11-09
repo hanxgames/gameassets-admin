@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="referrer" content="no-referrer" />
+  <title>HanX Assets yönetim</title>
+  <link rel="icon" href="https://gameassets.tr/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=Golos+Text:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="bar">
+    <div class="container bar-inner">
+      <a class="wordmark" href="./">HanX <b>Assets</b></a>
+      <span class="bar-label">Yönetim</span>
+      <div class="bar-user" id="bar-user" hidden>
+        <span id="user-avatar"></span>
+        <span id="user-name"></span>
+        <button class="btn btn--sm" type="button" id="logout">Çıkış yap</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Login -->
+    <section class="container login" id="view-login" hidden>
+      <h1>Yönetim paneli.</h1>
+      <p class="lead">GitHub erişim anahtarınla bir kez giriş yap; bu tarayıcı seni hatırlar.</p>
+      <form id="login-form" class="login-form" autocomplete="off">
+        <label for="token">Erişim anahtarı</label>
+        <input id="token" name="token" type="password" spellcheck="false" placeholder="github_pat_…" required />
+        <p class="field-error" id="login-error" role="alert"></p>
+        <button class="btn btn--primary" type="submit" id="login-btn">Giriş yap</button>
+      </form>
+      <details class="howto">
+        <summary>Anahtar nasıl oluşturulur</summary>
+        <ol>
+          <li><a class="link" id="token-link" target="_blank" rel="noopener">GitHub'da yeni anahtar sayfasını aç</a> (hanxgames hesabıyla).</li>
+          <li><strong>Token name</strong>: kimin için olduğunu yaz, örneğin "admin-ben" veya "admin-arkadas".</li>
+          <li><strong>Expiration</strong>: 1 yıl.</li>
+          <li><strong>Repository access</strong>: "Only select repositories" ve yalnızca <code>hanxgames/gameassets.tr</code>.</li>
+          <li><strong>Permissions</strong>: Actions "Read and write", Contents "Read and write". Metadata kendiliğinden "Read-only" olur.</li>
+          <li><strong>Generate token</strong>'a bas, çıkan anahtarı kopyalayıp yukarıya yapıştır.</li>
+        </ol>
+        <p class="small">Anahtar yalnızca bu tarayıcıda saklanır ve sadece GitHub'a gönderilir. Bir anahtarı iptal etmek için GitHub'da Settings, Developer settings, Personal access tokens sayfasından silmen yeterli.</p>
+      </details>
+    </section>
+
+    <!-- Dashboard -->
+    <section class="container dash" id="view-dash" hidden>
+      <div class="dash-head">
+        <h1>gameassets.tr</h1>
+        <div class="actions">
+          <button class="btn btn--primary" type="button" id="btn-sync">itch.io'dan şimdi çek</button>
+          <button class="btn" type="button" id="btn-deploy">Yeniden yayınla</button>
+          <a class="btn" href="https://gameassets.tr/" target="_blank" rel="noopener">Siteyi aç</a>
+        </div>
+      </div>
+
+      <dl class="stats" id="stats">
+        <div><dt>Sitedeki paket</dt><dd id="s-packs">…</dd></div>
+        <div><dt>Bundle</dt><dd id="s-bundles">…</dd></div>
+        <div><dt>Gizli paket</dt><dd id="s-hidden">…</dd></div>
+        <div><dt>Son itch.io senkronu</dt><dd id="s-synced">…</dd></div>
+      </dl>
+
+      <section class="panel" id="run-panel" hidden aria-live="polite">
+        <h2 id="run-title">İşlem</h2>
+        <ol class="steps" id="run-steps"></ol>
+        <p class="small" id="run-note"></p>
+        <div id="run-result"></div>
+      </section>
+
+      <section class="block">
+        <div class="block-head">
+          <h2>Paketler.</h2>
+          <label class="search"><span class="visually-hidden">Paket ara</span><input id="pack-filter" type="search" placeholder="Paket ara…" /></label>
+        </div>
+        <p class="small" id="pack-note">Gizle dediğin paket bir sonraki yayında siteden kalkar; itch.io'daki sayfası etkilenmez.</p>
+        <div class="table-wrap">
+          <table class="table" id="pack-table">
+            <thead><tr><th scope="col">Paket</th><th scope="col">Fiyat</th><th scope="col">Çeviri</th><th scope="col">Sitede</th></tr></thead>
+            <tbody id="pack-rows"><tr><td colspan="4" class="small">Yükleniyor…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="block">
+        <div class="block-head"><h2>Son yayınlar.</h2></div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th scope="col">Başlangıç</th><th scope="col">Tetikleyen</th><th scope="col">Değişiklik</th><th scope="col">Durum</th></tr></thead>
+            <tbody id="run-rows"><tr><td colspan="4" class="small">Yükleniyor…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="block">
+        <div class="block-head"><h2>Kısayollar.</h2></div>
+        <ul class="shortcuts">
+          <li><a href="https://search.google.com/search-console?resource_id=sc-domain%3Agameassets.tr" target="_blank" rel="noopener">Google Search Console</a></li>
+          <li><a href="https://www.bing.com/webmasters/home?siteUrl=https://gameassets.tr/" target="_blank" rel="noopener">Bing Webmaster</a></li>
+          <li><a href="https://itch.io/dashboard" target="_blank" rel="noopener">itch.io paneli</a></li>
+          <li><a href="https://github.com/hanxgames/gameassets.tr/actions" target="_blank" rel="noopener">GitHub Actions</a></li>
+          <li><a href="https://www.bilhost.com/panel/index.php?m=bilhostdns" target="_blank" rel="noopener">Bilhost DNS</a></li>
+        </ul>
+      </section>
+    </section>
+  </main>
+
+  <noscript><p class="container">Panel için JavaScript gerekir.</p></noscript>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
