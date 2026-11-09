@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex, nofollow, noarchive" />
   <meta name="referrer" content="no-referrer" />
+  <meta name="description" content="gameassets.tr yönetim paneli." />
   <title>HanX Assets yönetim</title>
   <link rel="icon" href="https://gameassets.tr/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -61,13 +62,6 @@
         </div>
       </div>
 
-      <dl class="stats" id="stats">
-        <div><dt>Sitedeki paket</dt><dd id="s-packs">…</dd></div>
-        <div><dt>Bundle</dt><dd id="s-bundles">…</dd></div>
-        <div><dt>Gizli paket</dt><dd id="s-hidden">…</dd></div>
-        <div><dt>Son itch.io senkronu</dt><dd id="s-synced">…</dd></div>
-      </dl>
-
       <section class="panel" id="run-panel" hidden aria-live="polite">
         <h2 id="run-title">İşlem</h2>
         <ol class="steps" id="run-steps"></ol>
@@ -75,7 +69,46 @@
         <div id="run-result"></div>
       </section>
 
-      <section class="block">
+      <nav class="tabs" role="tablist" aria-label="Panel bölümleri">
+        <button class="tab" role="tab" type="button" id="tab-genel" aria-controls="p-genel" aria-selected="true">Genel</button>
+        <button class="tab" role="tab" type="button" id="tab-paketler" aria-controls="p-paketler" aria-selected="false">Paketler</button>
+        <button class="tab" role="tab" type="button" id="tab-anasayfa" aria-controls="p-anasayfa" aria-selected="false">Ana sayfa</button>
+        <button class="tab" role="tab" type="button" id="tab-paylas" aria-controls="p-paylas" aria-selected="false">Paylaş</button>
+        <button class="tab" role="tab" type="button" id="tab-bakim" aria-controls="p-bakim" aria-selected="false">Bakım</button>
+      </nav>
+
+      <!-- Genel -->
+      <section class="tabpanel" role="tabpanel" id="p-genel" aria-labelledby="tab-genel">
+        <dl class="stats" id="stats">
+          <div><dt>Sitedeki paket</dt><dd id="s-packs">…</dd></div>
+          <div><dt>Bundle</dt><dd id="s-bundles">…</dd></div>
+          <div><dt>Gizli paket</dt><dd id="s-hidden">…</dd></div>
+          <div><dt>Son itch.io senkronu</dt><dd id="s-synced">…</dd></div>
+        </dl>
+        <p class="notice" id="new-on-itch" hidden></p>
+        <section class="block">
+          <div class="block-head"><h2>Son yayınlar.</h2></div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th scope="col">Başlangıç</th><th scope="col">İşlem</th><th scope="col">Durum</th></tr></thead>
+              <tbody id="run-rows"><tr><td colspan="3" class="small">Yükleniyor…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="block">
+          <div class="block-head"><h2>Kısayollar.</h2></div>
+          <ul class="shortcuts">
+            <li><a href="https://search.google.com/search-console?resource_id=sc-domain%3Agameassets.tr" target="_blank" rel="noopener">Google Search Console</a></li>
+            <li><a href="https://www.bing.com/webmasters/home?siteUrl=https://gameassets.tr/" target="_blank" rel="noopener">Bing Webmaster</a></li>
+            <li><a href="https://itch.io/dashboard" target="_blank" rel="noopener">itch.io paneli</a></li>
+            <li><a href="https://github.com/hanxgames/gameassets.tr/actions" target="_blank" rel="noopener">GitHub Actions</a></li>
+            <li><a href="https://www.bilhost.com/panel/index.php?m=bilhostdns" target="_blank" rel="noopener">Bilhost DNS</a></li>
+          </ul>
+        </section>
+      </section>
+
+      <!-- Paketler -->
+      <section class="tabpanel" role="tabpanel" id="p-paketler" aria-labelledby="tab-paketler" hidden>
         <div class="block-head">
           <h2>Paketler.</h2>
           <label class="search"><span class="visually-hidden">Paket ara</span><input id="pack-filter" type="search" placeholder="Paket ara…" /></label>
@@ -89,25 +122,127 @@
         </div>
       </section>
 
-      <section class="block">
-        <div class="block-head"><h2>Son yayınlar.</h2></div>
-        <div class="table-wrap">
-          <table class="table">
-            <thead><tr><th scope="col">Başlangıç</th><th scope="col">Tetikleyen</th><th scope="col">Değişiklik</th><th scope="col">Durum</th></tr></thead>
-            <tbody id="run-rows"><tr><td colspan="4" class="small">Yükleniyor…</td></tr></tbody>
-          </table>
+      <!-- Ana sayfa -->
+      <section class="tabpanel" role="tabpanel" id="p-anasayfa" aria-labelledby="tab-anasayfa" hidden>
+        <form class="card-form" id="featured-form">
+          <h2>Öne çıkanlar.</h2>
+          <div class="field">
+            <label for="f-hero">Büyük görseldeki paket</label>
+            <select id="f-hero"></select>
+            <p class="small">Ana sayfanın sağındaki büyük sahne bu paketin ilk ekran görüntüsü olur.</p>
+          </div>
+          <div class="field">
+            <label for="f-bundle">Fiyat damgasındaki bundle</label>
+            <select id="f-bundle"></select>
+          </div>
+          <fieldset class="field">
+            <legend>Ana sayfadaki paket şeridi</legend>
+            <label class="check"><input type="radio" name="rail-mode" value="newest" id="f-rail-newest" /> En yeni 8 paket (otomatik)</label>
+            <label class="check"><input type="radio" name="rail-mode" value="picked" id="f-rail-picked" /> Kendi seçimim (en fazla 8, tıklama sırasıyla)</label>
+            <div class="pick-grid" id="f-rail-list" hidden></div>
+          </fieldset>
+          <div class="form-foot">
+            <button class="btn btn--primary" type="submit" id="featured-save">Kaydet ve yayınla</button>
+            <p class="small" id="featured-note" role="status"></p>
+          </div>
+        </form>
+
+        <form class="card-form" id="campaign-form">
+          <h2>Kampanya şeridi.</h2>
+          <label class="check"><input type="checkbox" id="c-enabled" /> Şeridi sitede göster</label>
+          <div class="field">
+            <label for="c-en">Metin (İngilizce, diğer dillerde boşsa bu gösterilir)</label>
+            <input id="c-en" type="text" maxlength="90" placeholder="Black Friday: every pack 50% off" />
+          </div>
+          <div class="field">
+            <label for="c-tr">Metin (Türkçe)</label>
+            <input id="c-tr" type="text" maxlength="90" placeholder="Black Friday: tüm paketlerde %50 indirim" />
+          </div>
+          <details class="field">
+            <summary>Diğer diller</summary>
+            <div class="lang-grid" id="c-langs"></div>
+          </details>
+          <div class="field">
+            <label for="c-link">Bağlantı (isteğe bağlı)</label>
+            <input id="c-link" type="text" placeholder="/bundles/  veya  https://itch.io/s/…" />
+            <p class="small">"/" ile başlayan adresler her dilde o dilin sayfasına gider.</p>
+          </div>
+          <div class="field">
+            <label for="c-ends">Bitiş (Türkiye saati, isteğe bağlı)</label>
+            <input id="c-ends" type="datetime-local" />
+            <p class="small">Bu saatten sonra şerit kendiliğinden kalkar.</p>
+          </div>
+          <p class="small">Önizleme:</p>
+          <div class="campaign-preview" id="c-preview"></div>
+          <div class="form-foot">
+            <button class="btn btn--primary" type="submit" id="campaign-save">Kaydet ve yayınla</button>
+            <p class="small" id="campaign-note" role="status"></p>
+          </div>
+        </form>
+      </section>
+
+      <!-- Paylaş -->
+      <section class="tabpanel" role="tabpanel" id="p-paylas" aria-labelledby="tab-paylas" hidden>
+        <div class="card-form">
+          <h2>Paylaşım metni.</h2>
+          <div class="share-controls">
+            <div class="field"><label for="sh-pack">Paket</label><select id="sh-pack"></select></div>
+            <div class="field"><label for="sh-lang">Dil</label><select id="sh-lang"></select></div>
+            <fieldset class="field">
+              <legend>Nerede paylaşılacak</legend>
+              <label class="check"><input type="radio" name="sh-platform" value="x" checked /> X (Twitter)</label>
+              <label class="check"><input type="radio" name="sh-platform" value="reddit" /> Reddit</label>
+              <label class="check"><input type="radio" name="sh-platform" value="itch" /> itch.io devlog</label>
+            </fieldset>
+          </div>
+          <div class="field">
+            <label for="sh-out">Metin</label>
+            <textarea id="sh-out" rows="9" spellcheck="false"></textarea>
+            <p class="small" id="sh-count"></p>
+          </div>
+          <div class="form-foot">
+            <button class="btn btn--primary" type="button" id="sh-copy">Kopyala</button>
+            <a class="btn" id="sh-open" target="_blank" rel="noopener">X'te aç</a>
+            <p class="small" id="sh-note" role="status"></p>
+          </div>
         </div>
       </section>
 
-      <section class="block">
-        <div class="block-head"><h2>Kısayollar.</h2></div>
-        <ul class="shortcuts">
-          <li><a href="https://search.google.com/search-console?resource_id=sc-domain%3Agameassets.tr" target="_blank" rel="noopener">Google Search Console</a></li>
-          <li><a href="https://www.bing.com/webmasters/home?siteUrl=https://gameassets.tr/" target="_blank" rel="noopener">Bing Webmaster</a></li>
-          <li><a href="https://itch.io/dashboard" target="_blank" rel="noopener">itch.io paneli</a></li>
-          <li><a href="https://github.com/hanxgames/gameassets.tr/actions" target="_blank" rel="noopener">GitHub Actions</a></li>
-          <li><a href="https://www.bilhost.com/panel/index.php?m=bilhostdns" target="_blank" rel="noopener">Bilhost DNS</a></li>
-        </ul>
+      <!-- Bakım -->
+      <section class="tabpanel" role="tabpanel" id="p-bakim" aria-labelledby="tab-bakim" hidden>
+        <form class="card-form" id="schedule-form">
+          <h2>Otomatik senkron.</h2>
+          <label class="check"><input type="checkbox" id="sc-enabled" /> itch.io'yu her gün otomatik kontrol et</label>
+          <fieldset class="field">
+            <legend>Saatler (Türkiye saati, birden fazla seçebilirsin)</legend>
+            <div class="hour-grid" id="sc-hours"></div>
+          </fieldset>
+          <div class="form-foot">
+            <button class="btn btn--primary" type="submit" id="schedule-save">Kaydet</button>
+            <p class="small" id="schedule-note" role="status"></p>
+          </div>
+        </form>
+
+        <section class="card-form">
+          <div class="block-head">
+            <h2>Sağlık kontrolü.</h2>
+            <button class="btn" type="button" id="health-run">Şimdi kontrol et</button>
+          </div>
+          <p class="small">Her pazartesi 09:00'da tüm sayfaları, görselleri ve itch.io sayfalarını kontrol eder.</p>
+          <div id="health-report"><p class="small">Yükleniyor…</p></div>
+        </section>
+
+        <section class="card-form">
+          <h2>Geri al.</h2>
+          <p class="small">Siteyi seçtiğin değişiklikten önceki haline döndürür. Bu bir geri alma kaydı olarak eklenir, hiçbir şey silinmez; istersen geri almayı da geri alabilirsin. Senkron saati ve iş akışları korunur.</p>
+          <div class="table-wrap">
+            <table class="table">
+              <thead><tr><th scope="col">Tarih</th><th scope="col">Değişiklik</th><th scope="col"><span class="visually-hidden">İşlem</span></th></tr></thead>
+              <tbody id="commit-rows"><tr><td colspan="3" class="small">Yükleniyor…</td></tr></tbody>
+            </table>
+          </div>
+          <p class="small" id="restore-note" role="status"></p>
+        </section>
       </section>
     </section>
   </main>
