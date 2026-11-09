@@ -52,7 +52,7 @@ async function gh(path, { method = 'GET', body, raw = false } = {}) {
     const write = method !== 'GET';
     const area = /\/actions\//.test(path) ? 'Actions' : 'Contents';
     const missing = `${area} "${write ? 'Read and write' : 'Read-only'}"`;
-    throw new Error(`Anahtarının bu işlem için izni yok: ${missing} gerekiyor. GitHub'da Settings, Developer settings, Fine-grained tokens sayfasında anahtarı açıp Permissions bölümünden Contents ve Actions için "Read and write" seç ve Update'e bas; panelde yeniden giriş yapman gerekmez.`);
+    throw new Error(`Anahtarın bu işlemi yapamıyor (${missing} gerekiyor). GitHub'da Settings, Developer settings, Fine-grained tokens sayfasında anahtarı açıp kontrol et: 1) Repository access "Only select repositories" olmalı ve listede hanxgames/gameassets.tr seçili olmalı (gameassets-admin değil). 2) Permissions bölümünde Contents ve Actions "Read and write" olmalı. Değiştirince Update'e bas; panelde yeniden giriş gerekmez.`);
   }
   if (!res.ok) {
     let msg = `${res.status}`;
